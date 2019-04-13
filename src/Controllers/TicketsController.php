@@ -36,7 +36,7 @@ class TicketsController extends Controller
             $datatables = app(\Yajra\Datatables\Datatables::class);
         }
 
-        $user = $this->agent->find(auth()->user()->id);
+        $user = $this->agent->find(auth(Setting::guard())->id());
 
         if ($user->isAdmin()) {
             if ($complete) {
@@ -222,7 +222,7 @@ class TicketsController extends Controller
         $ticket->category_id = $request->category_id;
 
         $ticket->status_id = Setting::grab('default_status_id');
-        $ticket->user_id = auth()->user()->id;
+        $ticket->user_id = auth(Setting::guard())->id();
         $ticket->autoSelectAgent();
 
         $ticket->save();

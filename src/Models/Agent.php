@@ -3,7 +3,6 @@
 namespace Kordy\Ticketit\Models;
 
 use App\User;
-use Auth;
 
 class Agent extends User
 {
@@ -99,11 +98,12 @@ class Agent extends User
 
             return false;
         }
-        if (auth()->check()) {
-            if (auth()->user()->ticketit_agent) {
+        if (auth(Setting::guard())->check()) {
+            if (auth(Setting::guard())->user()->ticketit_agent) {
                 return true;
             }
         }
+        return false;
     }
 
     /**
@@ -113,7 +113,7 @@ class Agent extends User
      */
     public static function isAdmin()
     {
-        return auth()->check() && auth()->user()->ticketit_admin;
+        return auth(Setting::guard())->check() && auth(Setting::guard())->user()->ticketit_admin;
     }
 
     /**
@@ -125,11 +125,12 @@ class Agent extends User
      */
     public static function isAssignedAgent($id)
     {
-        if (auth()->check() && Auth::user()->ticketit_agent) {
-            if (Auth::user()->id == Ticket::find($id)->agent->id) {
+        if (auth(Setting::guard())->check() && auth(Setting::guard())->user()->ticketit_agent) {
+            if (auth(Setting::guard())->user()->id == Ticket::find($id)->agent->id) {
                 return true;
             }
         }
+        return false;
     }
 
     /**
@@ -141,11 +142,12 @@ class Agent extends User
      */
     public static function isTicketOwner($id)
     {
-        if (auth()->check()) {
-            if (auth()->user()->id == Ticket::find($id)->user->id) {
+        if (auth(Setting::guard())->check()) {
+            if (auth(Setting::guard())->user()->id == Ticket::find($id)->user->id) {
                 return true;
             }
         }
+        return false;
     }
 
     /**
@@ -204,7 +206,7 @@ class Agent extends User
 
     public function getTickets($complete = false) // (To be deprecated)
     {
-        $user = self::find(auth()->user()->id);
+        $user = self::find(auth(Setting::guard())->id());
 
         if ($user->isAdmin()) {
             $tickets = $user->allTickets($complete);

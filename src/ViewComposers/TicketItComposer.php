@@ -12,9 +12,9 @@ class TicketItComposer
     public static function settings(&$u)
     {
         view()->composer('ticketit::*', function ($view) use (&$u) {
-            if (auth()->check()) {
+            if (auth(Setting::guard())->check()) {
                 if ($u === null) {
-                    $u = Agent::find(auth()->user()->id);
+                    $u = Agent::find(auth(Setting::guard())->id());
                 }
                 $view->with('u', $u);
             }

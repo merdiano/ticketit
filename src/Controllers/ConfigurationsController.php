@@ -4,8 +4,6 @@ namespace Kordy\Ticketit\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Kordy\Ticketit\Models\Configuration;
 use Kordy\Ticketit\Models\Setting;
@@ -123,7 +121,7 @@ class ConfigurationsController extends Controller
 
         if ($request->serialize) {
             //if(!Hash::check($request->password, Auth::user()->password)){
-            if (!Auth::attempt($request->only('password'), false, false)) {
+            if (!auth(Setting::guard())->attempt($request->only('password'), false, false)) {
                 return back()->withErrors([trans('ticketit::admin.config-edit-auth-failed')]);
             }
             if (false === eval('$value = serialize('.$value.');')) {

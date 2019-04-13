@@ -31,6 +31,9 @@ class Setting extends Model
         return $query->whereSlug($slug);
     }
 
+    public static function guard(){
+        return 'backpack';
+    }
     /**
      * Grab a setting from cached Settings table by slug.
      * Cache lifetime: 60 minutes.

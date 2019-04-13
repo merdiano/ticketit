@@ -278,6 +278,11 @@ class SettingsTableSeeder extends Seeder
              */
             'routes' => base_path('vendor/kordy/ticketit/src').'/routes.php',
 
+            /*
+             * Auth guard
+             */
+            'guard' => 'backpack'
+
         ];
     }
 }
